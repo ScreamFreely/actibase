@@ -41,7 +41,7 @@ class CreateEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserAddedEvent
-        fields = ('id', 'location', 'link', 'name', 'startdate', 'description', 'city', 'participants',)
+        fields = ('id', 'name', 'event_type', 'location', 'city', 'startdate', 'link', 'description', 'participants',)
         depth = 1
 
 

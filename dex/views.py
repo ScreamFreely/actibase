@@ -10,7 +10,8 @@ from django.views.generic import ListView
 from django.db.models import Q
 
 from cities.models import City
-from dex.models.dx_cities import dx_City
+#from dex.models.dx_cities import dx_City
+from dex.models.models_base import UserAddedEvent
 
 from opencivicdata.core.models import Person, Organization, Membership, Post
 from opencivicdata.legislative.models import Event, Bill
@@ -76,7 +77,7 @@ class EventPicsAPIView(generics.ListAPIView):
 @permission_classes([])
 @authentication_classes([])
 class CreateEventAPIView(generics.ListCreateAPIView):
-    queryset = Event.objects.all()
+    queryset = UserAddedEvent.objects.all()
     serializer_class = CreateEventSerializer
 
     def perform_create(self, serializer):
