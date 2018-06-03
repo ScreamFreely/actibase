@@ -20,13 +20,15 @@ class UserAddedEvent(models.Model):
     event_type = models.CharField(max_length=128, blank=True, null=True)  
     name = models.CharField(max_length=128, blank=True, null=True)  
     location = models.CharField(max_length=128,
-                               blank=False,
-                               null=False)
+                               blank=True,
+                                null=True)
     link = models.CharField(max_length=64, blank=False, null=False)
     startdate = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=64, blank=False, null=False)
+    city = models.CharField(max_length=64, blank=True, null=True)
     participants = models.CharField(max_length=512, blank=False, null=False)
+    password = models.CharField(max_length=128, blank=False, null=False)  
+
     
     def __unicode__(self):
         return u'%s' % (self.name)
