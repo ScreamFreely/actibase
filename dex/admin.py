@@ -1,9 +1,16 @@
 from django.contrib import admin
 
-from .models import *
+from .models.models_base import *
+
+
+class UserAddedEventAdmin(admin.ModelAdmin):
+    list_display = ("name", "city", "event_type",)
+    ordering = ("city", "name", "event_type", )
+    list_filter = ("city", "event_type")
+
+
 
 """
-
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
@@ -35,7 +42,7 @@ class ActionAdmin(admin.ModelAdmin):
 
     def bill_number(self, obj):
         return obj.bill.number
-"""
+
 
 class EventsAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "calendar", "time")
@@ -47,8 +54,9 @@ class OrgAdmin(admin.ModelAdmin):
     list_display = ("name", "published",)
     ordering = ("name", "published")
     list_filter = ("published", "org_type",)
+"""
 
-
+admin.site.register(UserAddedEvent, UserAddedEventAdmin)
 #admin.site.register(Tag, TagAdmin)
 #admin.site.register(Action, ActionAdmin)
 #admin.site.register(PolicyRecord, BillAdmin)

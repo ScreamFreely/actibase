@@ -13,6 +13,8 @@ urlpatterns = [
 
     url(r'^api/events$', EventsAPIView.as_view(), name="events"),
     url(r'^api/event/[-@\w]+/$', EventAPIView.as_view(), name="event"),
+    url(r'^api/add-event/$', CreateEventAPIView.as_view(), name="event"),    
+
     url(r'^api/pics/[-@\w]+/$', EventPicsAPIView.as_view(), name="eventpics"),    
     
     url(r'^api/people$', PeopleAPIView.as_view(), name="people"),

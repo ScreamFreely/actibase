@@ -16,6 +16,7 @@ from opencivicdata.core.models import Person, Organization, Membership, Post
 from opencivicdata.legislative.models import Event, Bill
 
 from .serializers import (
+    CreateEventSerializer,
     OrganizationsSerializer,
     OrgSerializer,    
     PersonSerializer,
@@ -60,6 +61,7 @@ class EventAPIView(generics.ListAPIView):
         queryset = Event.objects.filter(id=path)
         return queryset
 
+
 @permission_classes([])
 @authentication_classes([])
 class EventPicsAPIView(generics.ListAPIView):
@@ -70,6 +72,15 @@ class EventPicsAPIView(generics.ListAPIView):
         queryset = Event.objects.filter(start_date__gte=datetime.now(), jurisdiction__name=path)
         return queryset.order_by('start_date')
     
+
+@permission_classes([])
+@authentication_classes([])
+class CreateEventAPIView(generics.ListCreateAPIView):
+    queryset = Event.objects.all()
+    serializer_class = CreateEventSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 #################
 ## Memberships ##

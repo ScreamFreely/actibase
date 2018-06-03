@@ -9,6 +9,7 @@ from opencivicdata.core.models import Jurisdiction, Person, Organization, Member
 
 from opencivicdata.legislative.models import Event, Bill
 
+from .models.models_base import UserAddedEvent
 
 ############
 ## Events ##
@@ -33,6 +34,14 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'location', 'agenda', 'links', 'sources', 'name', 'start_date', 'description', 'jurisdiction', 'participants',)
+        depth = 1
+
+
+class CreateEventSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserAddedEvent
+        fields = ('id', 'location', 'link', 'name', 'startdate', 'description', 'city', 'participants',)
         depth = 1
 
 
