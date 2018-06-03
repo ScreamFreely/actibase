@@ -173,6 +173,9 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:3305'    
 )
 
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = default_headers 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

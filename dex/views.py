@@ -29,7 +29,7 @@ from .serializers import (
     )
 
 from rest_framework.settings import api_settings
-from rest_framework import generics
+from rest_framework import generics, renderers
 
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
