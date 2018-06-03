@@ -34,7 +34,8 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 tz_format = '%Y-%m-%dT$H:%M:%S+%H:%M'
-odt = datetime.now()
+td = timedelta(hours=24)
+odt = datetime.now() - td
 ndt = odt.strftime(tz_format)
 
 ############

@@ -1,4 +1,3 @@
-k
 import sys
 import os
 import re
@@ -18,14 +17,14 @@ import facebook, twitter
 
 from xvfbwrapper import Xvfb
 
-#sys.path.insert(0, '/websrv/actibase')
-sys.path.insert(0, '/home/nkfx/ScreamFreely/MnActivist/server')
+sys.path.insert(0, '/var/www/mn.actibase')
+#sys.path.insert(0, '/home/nkfx/ScreamFreely/MnActivist/server')
 import mnauth as KF
 
 LINKS = [
     'https://mnactivist.org/p/Minneapolis',
     'https://mnactivist.org/p/Saint-Paul',
-    'https://mnactivist.org/p/Minnesota',
+#    'https://mnactivist.org/p/Minnesota',
 ]
 
 mnact = {'access_token': KF.fb_token, 'id': KF.fb_id}
@@ -74,6 +73,6 @@ for link in LINKS:
 br.close() 
 xvfb.stop()
 os.system("pkill Xvfb")
-#os.system("rm *.png")
+os.system("rm *.png")
 
 
