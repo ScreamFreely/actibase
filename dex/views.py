@@ -13,11 +13,12 @@ from cities.models import City
 #from dex.models.dx_cities import dx_City
 from dex.models.models_base import UserAddedEvent
 
-from opencivicdata.core.models import Person, Organization, Membership, Post
+from opencivicdata.core.models import Person, Organization, Membership, Post, Jurisdiction
 from opencivicdata.legislative.models import Event, Bill
 
 from .serializers import (
     CreateEventSerializer,
+    JurisdictionSerializer,
     OrganizationsSerializer,
     OrgSerializer,    
     PersonSerializer,
@@ -39,6 +40,17 @@ tz_format = '%Y-%m-%dT$H:%M:%S+%H:%M'
 td = timedelta(hours=24)
 odt = datetime.now() - td
 ndt = odt.strftime(tz_format)
+
+
+##################
+## Jurisdiction ##
+##################
+@permission_classes([])
+@authentication_classes([])
+class JurisdictionAPIView(generics.ListAPIView):
+    serializer_class = JurisdictionSerializer
+    queryset = Jurisdiction.objects.all()
+
 
 ############
 ## Events ##
