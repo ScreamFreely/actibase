@@ -118,5 +118,6 @@ class MNSenateScraper(Scraper):
             event.add_source(m['link'])
             for chair in m['chair']:
                 event.add_person(name=chair, note="Chair")
+            event.add_classification('govt')                                            
             yield event
         

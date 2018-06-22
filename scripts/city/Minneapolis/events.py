@@ -60,6 +60,7 @@ class MinneapolisEventScraper(Scraper):
                       location_name=c['Location'])
             e.add_committee(c['CommitteeName'])
             e.add_source(url)
+            e.add_classification('govt')            
             if c['MarkedAgendaPublished'] == True:
                 event_url = "{0}{1}/{2}".format(AGENDA_BASE_URL, c['Abbreviation'], c['AgendaId'])
                 e.add_media_link(note="Agenda",

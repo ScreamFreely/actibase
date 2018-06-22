@@ -147,4 +147,5 @@ class MNHouseScraper(Scraper):
             if m['chair'] is not None:
                 for chair in m['chair']:
                    event.add_person(name=chair, note="Chair")
+            event.add_classification('govt')                                               
             yield event

@@ -104,7 +104,8 @@ class StpaulEventScraper(Scraper):
                                       location_name=m['location']
                         )
                         event.add_committee('Saint Paul City Council')                
-                    event.add_source(m['link']) 
+                    event.add_source(m['link'])
+                    event.add_classification('govt')                                
                     yield event
             
 

@@ -2,15 +2,16 @@ import sys
 import os
 import django
 
-sys.path.append('/websrv/digisnaxx.com/DigiSnaxx/')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'DigiSnaxx.settings'
-django.setup()
+#sys.path.append('/websrv/digisnaxx.com/DigiSnaxx/')
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'DigiSnaxx.settings'
+#django.setup()
 
 from lxml import html
-import requests, re, datetime
+import requests, re
+from datetime import datetime
 
 
-from digilegislature.models import *
+#from digilegislature.models import *
 
 
 root = requests.get('https://board.co.hennepin.mn.us/hcmeetview/Default.aspx?year=2016&month=12')
@@ -35,15 +36,15 @@ for b in board_mtgs[1:]:
         nlinks.append(l)
     clinks = zip(link_text, nlinks)
     enotes = []
-    event, created = Events.objects.get_or_create(title=info[1],
-                                                  time=real_date,
-                                                  calendar="Hennepin County")
+#    event, created = Events.objects.get_or_create(title=info[1],
+#                                                  time=real_date,
+#                                                  calendar="Hennepin County")
     if len(clinks)>0:
         for i,l in clinks:
             j = "<a href=\"" + l + "\" target=_blank>" + i + "</a>"
-            enotes.append(j)
-        event.notes = " ".join(enotes)
-        event.save()
+#            enotes.append(j)
+#        event.notes = " ".join(enotes)
+#        event.save()
 
 
 
@@ -59,15 +60,15 @@ for c in cmt_mtgs[1:]:
         nlinks.append(l)
     clinks = zip(link_text, nlinks)
     enotes = []
-    event, created = Events.objects.get_or_create(title=info[1],
-                                                  time=real_date,
-                                                  calendar="Hennepin County")
+#    event, created = Events.objects.get_or_create(title=info[1],
+#                                                  time=real_date,
+#                                                  calendar="Hennepin County")
     if len(clinks)>0:
         for i,l in clinks:
             j = "<a href=\"" + l + "\" target=_blank>" + i + "</a>"
-            enotes.append(j)
-        event.notes = " ".join(enotes)
-        event.save()
+#            enotes.append(j)
+#        event.notes = " ".join(enotes)
+#        event.save()
 
 
     
@@ -83,14 +84,14 @@ for a in auth_mtgs[1:]:
         nlinks.append(l)
     clinks = zip(link_text, nlinks)
     enotes = []
-    event, created = Events.objects.get_or_create(title=info[1],
-                                                  time=real_date,
-                                                  calendar="Hennepin County")
+#    event, created = Events.objects.get_or_create(title=info[1],
+#                                                  time=real_date,
+#                                                  calendar="Hennepin County")
     if len(clinks)>0:
         for i,l in clinks:
             j = "<a href=\"" + l + "\" target=_blank>" + i + "</a>"
-            enotes.append(j)
-        event.notes = " ".join(enotes)
-        event.save()
+#            enotes.append(j)
+#        event.notes = " ".join(enotes)
+#        event.save()
 
 
