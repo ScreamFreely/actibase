@@ -119,7 +119,8 @@ class MNCommsScraper(Scraper):
 
             event = Event(name=m['title'],
                           start_date=tz.localize(m['date']),
-                          location_name=m['room'] 
+                          location_name=m['room'],
+                          classification='govt'
             )
 
             if len(m['notice']) > 0:
@@ -127,7 +128,6 @@ class MNCommsScraper(Scraper):
             event.add_committee(m['title'])
             event.add_source(m['link'])
             for chair in m['chair']:
-                event.add_person(name=chair, note="Chair")
-            event.add_classification('govt')                            
+                event.add_person(name=chair, note="Chair")                           
             yield event
 

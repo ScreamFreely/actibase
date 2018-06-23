@@ -2,6 +2,9 @@ import requests, re, datetime
 from lxml import html
 
 
+
+
+"""
 broot = requests.get('https://www.hennepin.us/your-government#leadership')
 base = html.fromstring(broot.text)
 grids = base.xpath('.//*[@class="module-grid"]/article')
@@ -64,6 +67,7 @@ def run_board_mts(board_mtgs):
         clinks = zip(link_text, nlinks)
         enotes = []
         print('{0} {1}'.format(info[1], real_date))
+        print(links)
 
         if len(list(clinks))>0:
             for i,l in clinks:
@@ -137,5 +141,3 @@ for x in range(0,4):
     run_board_mts(board_mtgs)
     run_cmt_mts(cmt_mtgs)
     run_auth_mts(auth_mtgs)
-
-"""

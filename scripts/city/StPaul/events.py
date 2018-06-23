@@ -89,23 +89,25 @@ class StpaulEventScraper(Scraper):
 
                         event = Event(name=m['info'].strip(),
                                       start_date=m['date'], 
-                                      location_name=m['location']
+                                      location_name=m['location'],
+                                      classification='govt'
                         )
                         m['name'] = m['info'].replace('Meeting', '').replace(' - Cancelled', '').replace('Events', '').strip()
                         event.add_committee(m['name'])
                     elif 'Holiday' in m['info']:
                         event = Event(name=m['info'].strip(),
                                       start_date=m['date'],
-                                      location_name=m['location']                                      
+                                      location_name=m['location'],
+                                      classification='govt'                                      
                         )
                     else:
                         event = Event(name=m['info'].strip(),
                                       start_date=m['date'],                                       
-                                      location_name=m['location']
+                                      location_name=m['location'],
+                                      lassification='govt'
                         )
                         event.add_committee('Saint Paul City Council')                
-                    event.add_source(m['link'])
-                    event.add_classification('govt')                                
+                    event.add_source(m['link'])                               
                     yield event
             
 

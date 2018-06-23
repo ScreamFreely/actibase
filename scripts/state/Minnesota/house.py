@@ -133,7 +133,8 @@ class MNHouseScraper(Scraper):
                 m['link'] = 'https://www.leg.state.mn.us/cal?type=all'
             event = Event(name=m['title'],
                           start_date=tz.localize(m['date']),
-                          location_name=m['room'] 
+                          location_name=m['room'], 
+                          classification='govt'
             )
             if len(bills) > 0:
                 for bill in bills:

@@ -109,7 +109,8 @@ class MNSenateScraper(Scraper):
                 m['room'] = 'Senate in session'
             event = Event(name=m['title'],
                           start_date=tz.localize(m['date']),
-                          location_name=m['room'] 
+                          location_name=m['room'],
+                          classification='govt'
             )
 
             if len(m['notice']) > 0:
