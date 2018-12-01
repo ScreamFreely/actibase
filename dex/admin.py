@@ -4,13 +4,16 @@ from .models.models_base import *
 
 
 class UserAddedEventAdmin(admin.ModelAdmin):
-    list_display = ("name", "city", "event_type",)
+    list_display = ("name", "city", "event_type", "startdate")
     ordering = ("city", "name", "event_type", )
     list_filter = ("city", "event_type")
 
 
+class FBEventAdmin(admin.ModelAdmin):
+    list_display = ('published', 'link')
 
 """
+
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
@@ -54,9 +57,16 @@ class OrgAdmin(admin.ModelAdmin):
     list_display = ("name", "published",)
     ordering = ("name", "published")
     list_filter = ("published", "org_type",)
+
+
 """
 
 admin.site.register(UserAddedEvent, UserAddedEventAdmin)
+admin.site.register(Comment)
+admin.site.register(Apple)
+admin.site.register(Quote)
+admin.site.register(FBEvent, FBEventAdmin)
+admin.site.register(Organization)
 #admin.site.register(Tag, TagAdmin)
 #admin.site.register(Action, ActionAdmin)
 #admin.site.register(PolicyRecord, BillAdmin)

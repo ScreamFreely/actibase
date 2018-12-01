@@ -9,40 +9,62 @@ from lxml import html
 import pytz
 
 tz = pytz.timezone("US/Central")
+current_date = datetime.today()
+current_month = current_date.month
+current_year = current_date.year
+date_range = []
+
+for x in range(0,4):
+    if not current_month == 12:
+        cm = current_month
+        if len(str(cm)) < 2:
+            cm = '0{0}'.format(cm)
+        timestamp = "{0}-{1}".format(current_year, cm)
+        date_range.append(timestamp)
+        current_month += 1
+
+    elif current_month == 12:
+        cm = '12'
+        timestamp = "{0}-{1}".format(current_year, cm)        
+        date_range.append(timestamp)
+        current_month = 1
+        current_year += 1
+
 
 class StpaulEventScraper(Scraper):
     global date_range
     def scrape(self):
+        #b = requests.get('https://api.mnactivist.org/api/add-event')
+        #events = b.json()['results']
+        events = []
+        uaes = []
+        for e in events:
+            continue
+            if e['city'] == 'Saint Paul':
+                uaes.append(e)
+            elif e['city'] == 'St Paul':
+                e['city'] = 'Saint Paul'
+                uaes.append(e)
+            elif e['city'] == 'St. Paul':
+                e['city'] = 'Saint Paul'
+                uaes.append(e)
 
-        current_date = datetime.today()
-        current_month = current_date.month
-        current_year = current_date.year
-
-
-        date_range = []
-
-        print(current_month)
-
-        for x in range(0,4):
-            if not current_month == 12:
-                cm = current_month
-                if len(str(cm)) < 2:
-                    cm = '0{0}'.format(cm)
-                    timestamp = "{0}-{1}".format(current_year, cm)
-                    date_range.append(timestamp)
-                    current_month += 1
-
-            elif current_month == 12:
-                cm = '12'
-                timestamp = "{0}-{1}".format(current_year, cm)        
-                date_range.append(timestamp)
-                current_month = 1
-                current_year += 1
+        for u in uaes:
+            continue
+            nloc = u['location'].split(' |0| ')
+            loc = (' ').join(nloc)
+            new_event = Event(name=u['name'],
+                      start_date=u['startdate'],
+                      location_name=loc,
+                      classification=u['event_type'])
+            new_event.add_source('https://mnactivist.org')
+            yield new_event
 
 
         format1 = "%A %B %d, %Y - %I:%M %p"
         format2 = "%A %B %d, %Y - "
         format3 = "%m/%d/%y"
+        print(date_range)
         for date in date_range:
             root = requests.get("https://www.stpaul.gov/calendar/" + date)
             base = html.fromstring(root.text)
@@ -67,9 +89,15 @@ class StpaulEventScraper(Scraper):
                     loc1 = exists[0].xpath('.//*/div[@class="thoroughfare"]/text()')
                     loc2 = exists[0].xpath('.//*/div[@class="premise"]/text()')
                     if len(loc1) > 0:
+                        print(loc1)
                         m['location'] = loc1[0] 
                     if len(loc2) > 0:
-                        m['location'] = m['location'] + " " + loc2[0]
+                        print(m)
+                        print(loc2)
+                        if not len(loc1) > 0:
+                            m['location'] = loc2[0]
+                        else:
+                            m['location'] = m['location'] + " " + loc2[0]
                     else:
                         m['location'] = 'N/A'
                     if ":" in date[0]:
@@ -90,7 +118,7 @@ class StpaulEventScraper(Scraper):
                         event = Event(name=m['info'].strip(),
                                       start_date=m['date'], 
                                       location_name=m['location'],
-                                      classification='govt'
+                                      classification='govt' 
                         )
                         m['name'] = m['info'].replace('Meeting', '').replace(' - Cancelled', '').replace('Events', '').strip()
                         event.add_committee(m['name'])
@@ -104,10 +132,10 @@ class StpaulEventScraper(Scraper):
                         event = Event(name=m['info'].strip(),
                                       start_date=m['date'],                                       
                                       location_name=m['location'],
-                                      lassification='govt'
+                                      classification='govt' 
                         )
                         event.add_committee('Saint Paul City Council')                
-                    event.add_source(m['link'])                               
+                    event.add_source(m['link']) 
                     yield event
             
 

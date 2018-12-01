@@ -4,9 +4,8 @@ import importlib
 
 import dj_database_url
 
-#sys.path.insert(0, '/websrv/actibase')
-sys.path.insert(0, '/home/nkfx/ScreamFreely/ActiSites/MnActivist/server')
-import mnauth as KF
+sys.path.insert(0, '/var/www/mn.actibase')
+import siteauth as KF
 
 #DATABASE_URL = os.environ.get('DATABASE_URL', 'postgis://pupa:pupa@localhost/opencivicdata')
 

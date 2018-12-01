@@ -11,13 +11,17 @@ from django.db.models import Q
 
 from cities.models import City
 #from dex.models.dx_cities import dx_City
-from dex.models.models_base import UserAddedEvent
+from dex.models.models_base import UserAddedEvent, Comment, Apple, FBEvent, Quote
 
 from opencivicdata.core.models import Person, Organization, Membership, Post, Jurisdiction
 from opencivicdata.legislative.models import Event, Bill
 
 from .serializers import (
+    FBEventSerializer,
+    QuoteSerializer,
     CreateEventSerializer,
+    CommentSerializer,
+    AppleSerializer,
     JurisdictionSerializer,
     OrganizationsSerializer,
     OrgSerializer,    
@@ -31,17 +35,78 @@ from .serializers import (
 
 from rest_framework.settings import api_settings
 from rest_framework import generics, renderers
-
+from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 tz_format = '%Y-%m-%dT$H:%M:%S+%H:%M'
-td = timedelta(hours=24)
+td = timedelta(hours=18)
 odt = datetime.now() - td
 ndt = odt.strftime(tz_format)
 
 
+
+##############
+## Comments ##
+##############
+@permission_classes([])
+@authentication_classes([])
+class CreateCommentAPIView(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+@permission_classes([])
+@authentication_classes([])
+class CreateAppleAPIView(generics.ListCreateAPIView):
+    queryset = Apple.objects.all()
+    serializer_class = AppleSerializer
+    http_method_names = ['post',]
+
+    renderer_classes =(JSONRenderer,)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+
+@permission_classes([])
+@authentication_classes([])
+class CreateFBEventAPIView(generics.ListCreateAPIView):
+    queryset = FBEvent.objects.all()
+    serializer_class = FBEventSerializer
+
+    def perform_create(self, serializer):
+        link = self.request.data['link'] 
+        if '?' in link:
+            if 'event_time_id' in link:
+                link = link
+            else:
+                link = link.split('?')[0]
+        if link.startswith('https://m.'):
+            link = link.replace('https://m.', 'https://')
+        if link.startswith('m.'):
+            link = 'https://' + link.replace('m.', '')
+        link = link.replace('www.', '')
+        serializer.save(published='f', link=link)
+
+
+@permission_classes([])
+@authentication_classes([])
+class CreateQuoteAPIView(generics.ListCreateAPIView):
+    queryset = Quote.objects.all()
+    serializer_class = QuoteSerializer
+
+    def perform_create(self, serializer):
+        print(self.request.data)
+        self.request.data['published'] = 'f'
+        serializer.save(published='f')
+
+        
 ##################
 ## Jurisdiction ##
 ##################
@@ -82,7 +147,12 @@ class EventPicsAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         path = self.request.path.split('/')[-2].replace('-', ' ')
-        queryset = Event.objects.filter(start_date__gte=datetime.now(), jurisdiction__name=path)
+        print(path)
+        eventClass = ['arts', 'edu', 'civ', 'org', 'demo']
+        if path == eventClass:
+            queryset = Event.objects.filter(start_date__gte=datetime.now(), classification=path)
+        else:
+            queryset = Event.objects.filter(start_date__gte=datetime.now(), jurisdiction__name=path)
         return queryset.order_by('start_date')
     
 
@@ -93,7 +163,7 @@ class CreateEventAPIView(generics.ListCreateAPIView):
     serializer_class = CreateEventSerializer
 
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(published='f')
 
 #################
 ## Memberships ##
@@ -274,6 +344,7 @@ class SearchPolicyAPIView(generics.ListAPIView):
         return queryset
 
 
+
 ##########################
 ## Search Organizations ##
 ##########################
@@ -289,6 +360,3 @@ class SearchOrganizationsAPIView(generics.ListAPIView):
             queryset = queryset.filter(Q(name__icontains=org_query)).distinct()
             print(org_query)
         return queryset
-
-
-

@@ -50,6 +50,33 @@ tz = pytz.timezone("US/Central")
 class MinneapolisEventScraper(Scraper):
 
     def scrape(self):
+        #b = requests.get('https://api.mnactivist.org/api/add-event')
+        #events = b.json()['results']
+        uaes = []
+        events = []
+        for e in events:
+            continue 
+            if e['city'] == 'Minneapolis':
+                uaes.append(e)
+            elif e['city'] == 'Mpls':
+                e['city'] = 'Minneapolis'
+                uaes.append(e)
+            elif e['city'] == 'mpls':
+                e['city'] = 'Minneapolis'
+                uaes.append(e)
+
+        for u in uaes:
+            continue 
+            nloc = u['location'].split(' |0| ')
+            loc = (' ').join(nloc)
+            new_event = Event(name=u['name'],
+                      start_date=u['startdate'],
+                      location_name=loc,
+                      classification=u['event_type'])
+            new_event.add_source('https://mnactivist.org')
+            yield new_event
+
+
         url = 'https://lims.minneapolismn.gov/Calendar/GetCalenderList?'
         council_events = cal_list
         for c in council_events:
@@ -60,7 +87,7 @@ class MinneapolisEventScraper(Scraper):
                       location_name=c['Location'],
                       classification='govt')
             e.add_committee(c['CommitteeName'])
-            e.add_source(url)          
+            e.add_source(url)
             if c['MarkedAgendaPublished'] == True:
                 event_url = "{0}{1}/{2}".format(AGENDA_BASE_URL, c['Abbreviation'], c['AgendaId'])
                 e.add_media_link(note="Agenda",

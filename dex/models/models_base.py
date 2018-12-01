@@ -7,6 +7,9 @@ from django.db import models
 from versatileimagefield.fields import VersatileImageField
 from django.core.files.storage import FileSystemStorage
 
+from opencivicdata.core.models import Organization
+
+
 #from .dx_cities import dx_City, dx_County, dx_State, dx_PostalCode, dx_District
 #from pupa.scrape import Person, Organization
 #Ps = FileSystemStorage(location='media/maps/districts/')
@@ -15,19 +18,69 @@ from django.core.files.storage import FileSystemStorage
 ################
 # Dex Entities #
 ################
+class FBEvent(models.Model): 
+    link = models.CharField(max_length=128, blank=False, null=False) 
+    published = models.BooleanField()   
+    
+    def __unicode__(self):
+        return u'%s' % (self.link)
+
+    def __str__(self):
+        return u'%s' % (self.link) 
+
+
+
+class Quote(models.Model):
+    quote = models.CharField(max_length=8, blank=False, null=False) 
+    author = models.CharField(max_length=8, blank=False, null=False)  
+    link = models.CharField(max_length=128, blank=False, null=False) 
+    published = models.BooleanField()   
+    
+    def __unicode__(self):
+        return u'%s' % (self.quote)
+
+    def __str__(self):
+        return u'%s' % (self.quote) 
+
+
+class Apple(models.Model):
+    first = models.CharField(max_length=8, blank=False, null=False) 
+    last = models.CharField(max_length=8, blank=False, null=False)  
+    email = models.CharField(max_length=128, blank=False, null=False)   
+    state = models.CharField(max_length=3, blank=False, null=False)
+    
+    def __unicode__(self):
+        return u'%s' % (self.email)
+
+    def __str__(self):
+        return u'%s' % (self.email) 
+
+
+class Comment(models.Model):
+    comment_type = models.CharField(max_length=8, blank=False, null=False)  
+    email = models.CharField(max_length=128, blank=False, null=False)  
+    description = models.TextField(blank=False, null=False)  
+    
+    def __unicode__(self):
+        return u'%s' % (self.email)
+
+    def __str__(self):
+        return u'%s' % (self.email)        
+
 
 class UserAddedEvent(models.Model):
-    event_type = models.CharField(max_length=128, blank=True, null=True)  
-    name = models.CharField(max_length=128, blank=True, null=True)  
+    event_type = models.CharField(max_length=8, blank=False, null=False)  
+    name = models.CharField(max_length=128, blank=False, null=False)  
     location = models.CharField(max_length=128,
-                               blank=True,
-                                null=True)
+                               blank=False,
+                                null=False)
     link = models.CharField(max_length=64, blank=False, null=False)
-    startdate = models.DateTimeField(auto_now_add=False, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    city = models.CharField(max_length=64, blank=True, null=True)
-    participants = models.CharField(max_length=512, blank=False, null=False)
-    password = models.CharField(max_length=128, blank=False, null=False)  
+    startdate = models.DateTimeField(auto_now_add=False, blank=False, null=False)
+    description = models.TextField(blank=False, null=False)
+    city = models.CharField(max_length=64, blank=False, null=False)
+    participants = models.CharField(max_length=512, blank=True, null=True)
+    password = models.CharField(max_length=128, blank=True, null=True) 
+    published = models.BooleanField() 
 
     
     def __unicode__(self):
@@ -39,6 +92,23 @@ class UserAddedEvent(models.Model):
     class Meta:
         verbose_name_plural = 'User Added Events'
         ordering = ['city', 'name', ]
+
+
+
+class Organization(models.Model):
+    org = models.OneToOneField(Organization, on_delete=models.PROTECT)
+    description = models.TextField()
+ #   candidate = models.ForeignKey(PublicOfficial)
+
+    def __unicode__(self):
+        return u'%s' % (self.org.name)
+
+    def __str__(self):
+        return u'%s' % (self.org.name)  
+
+    class Meta:
+        verbose_name_plural = 'Organization'
+        verbose_name = 'Organizations'
 
 
 '''

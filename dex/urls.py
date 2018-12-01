@@ -9,11 +9,15 @@ urlpatterns = [
     url(r'^api/searchevents$', SearchEventsAPIView.as_view(), name="detail"),
     url(r'^api/searchpeople$', SearchPeopleAPIView.as_view(), name="detail"),
     url(r'^api/searchpolicy$', SearchPolicyAPIView.as_view(), name="detail"),
-    url(r'^api/searchorgs$', SearchOrganizationsAPIView.as_view(), name="detail"),    
+    url(r'^api/searchorgs$', SearchOrganizationsAPIView.as_view(), name="detail"), 
+    url(r'^api/add-comment/$', CreateCommentAPIView.as_view(), name="acomment"), 
+    url(r'^api/add-apple/$', CreateAppleAPIView.as_view(), name="apple"), 
+    url(r'^api/add-quote/$', CreateQuoteAPIView.as_view(), name="quote"),  
+    url(r'^api/add-fb-event/$', CreateFBEventAPIView.as_view(), name="fbevent"),  
 
     url(r'^api/events$', EventsAPIView.as_view(), name="events"),
     url(r'^api/event/[-@\w]+/$', EventAPIView.as_view(), name="event"),
-    url(r'^api/add-event/$', CreateEventAPIView.as_view(), name="event"),    
+    url(r'^api/add-event/$', CreateEventAPIView.as_view(), name="aevent"),    
 
     url(r'^api/jurisdictions$', JurisdictionAPIView.as_view(), name="memberships"),
     

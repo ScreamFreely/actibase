@@ -9,7 +9,36 @@ from opencivicdata.core.models import Jurisdiction, Person, Organization, Member
 
 from opencivicdata.legislative.models import Event, Bill
 
-from .models.models_base import UserAddedEvent
+from .models.models_base import UserAddedEvent, Comment, Apple, Quote, FBEvent
+
+
+class FBEventSerializer(serializers.ModelSerializer):
+#    city_name = BaseCitySerializer()
+    class Meta:
+        model = FBEvent
+        fields = '__all__'
+
+
+class QuoteSerializer(serializers.ModelSerializer):
+#    city_name = BaseCitySerializer()
+    class Meta:
+        model = Quote
+        fields = '__all__'
+
+
+class CommentSerializer(serializers.ModelSerializer):
+#    city_name = BaseCitySerializer()
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class AppleSerializer(serializers.ModelSerializer):
+#    city_name = BaseCitySerializer()
+    class Meta:
+        model = Apple
+        fields = '__all__'
+        
 
 ############
 ## Events ##
@@ -41,8 +70,8 @@ class CreateEventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserAddedEvent
-        fields = ('id', 'name', 'event_type', 'location', 'city', 'startdate', 'link', 'description', 'participants',)
-        depth = 1
+        fields = '__all__'
+#        fields = ('id', 'name', 'event_type', 'location', 'city', 'startdate', 'link', 'description', 'participants', 'password', 'published')
 
 
         
@@ -96,7 +125,7 @@ class OrgSerializer(serializers.ModelSerializer):
 #    posts = PostSerializer(many=True)    
     class Meta:
         model = Organization
-        fields = ('id', 'name', 'image', 'classification', 'memberships', 'jurisdiction', 'posts', 'bills')
+        fields = ('id', 'name', 'image', 'classification', 'memberships', 'jurisdiction', 'posts', 'bills', 'extras',)
 
 
         

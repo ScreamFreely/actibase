@@ -4,6 +4,7 @@ from .events import MinneapolisEventScraper
 from .people import MinneapolisPersonScraper
 from .bills import MinneapolisBillScraper
 from .vote_events import MinneapolisVoteEventScraper
+from .parkrec import MplsParkRecEventScraper
 
 import datetime
 import requests
@@ -17,7 +18,8 @@ class Minneapolis(Jurisdiction):
     url = "http://minneapolismn.gov/"
     scrapers = {
         "events": MinneapolisEventScraper,
-        "people": MinneapolisPersonScraper,
+        "parkrec": MplsParkRecEventScraper,
+        # "people": MinneapolisPersonScraper,
         #        "bills": MinneapolisBillScraper,
         #        "vote_events": MinneapolisVoteEventScraper,
     }

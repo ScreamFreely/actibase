@@ -14,7 +14,9 @@ import os
 import sys
 sys.path.insert(0, '/var/www/mn.actibase')
 #sys.path.insert(0, '/home/nkfx/ScreamFreely/ActiSites/MnActivist/server')
-import mnauth as KF
+import siteauth as KF
+
+import datetime
 
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -32,6 +34,7 @@ USE_X_FORWARDED_HOST = True
 ALLOWED_HOSTS = KF.allowed_hosts
 ROOT_URLCONF = KF.root_urlconf
 WSGI_APPLICATION = KF.wsgi_application
+AUTH_USER_MODEL = 'accounts.User'
 
 SITE_ID = 1
 
@@ -47,10 +50,16 @@ INSTALLED_APPS = [
     'opencivicdata.legislative.apps.BaseConfig',
     'opencivicdata',
     'corsheaders',
-
     'rest_framework',
+
+    'rest_framework.authtoken',
+    'rest_framework_jwt',
+
+    'phonenumber_field',
     'cities',
     'pupa',
+
+    'accounts',
     'dex',
 
 ]
@@ -150,12 +159,31 @@ CITIES_SKIP_CITIES_WITH_EMPTY_REGIONS = True
 GEOMETRY_BACKEND = 'geos'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',	
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',   
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'PAGE_SIZE': 25 
 }
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_USERNAME_FIELD': 'email',
+    'JWT_USER_IDENTIFIER_APP': 'accounts',
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+PHONENUMBER_DB_FORMAT = 'E164'
 
 SCRAPELIB_RPM = 60
 SCRAPELIB_TIMEOUT = 60
@@ -169,12 +197,13 @@ CORS_ORIGIN_WHITELIST = (
     'google.com',
     'https://www.mnactivist.org',
     'https://mnactivist.org',    
-    'localhost:8000',
     'localhost:3305'    
 )
 
+
+
 from corsheaders.defaults import default_headers
-CORS_ALLOW_HEADERS = default_headers 
+#CORS_ALLOW_HEADERS = default_headers 
 
 LOGGING = {
     'version': 1,
