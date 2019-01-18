@@ -32,12 +32,12 @@ class Minnesota(Jurisdiction):
     name = "Minnesota"
     url = "http://state.mn.us/"
     scrapers = {
-        "bills": MNBillScraper,
-        "committees": MNCommitteeScraper,
+      #  "bills": MNBillScraper,
+      #  "committees": MNCommitteeScraper,
         "people": MNPersonScraper,
         "house": MNHouseScraper,
         "senate": MNSenateScraper,
-        "comms": MNCommsScraper,                
+      #  "comms": MNCommsScraper,                
         
 #        "vote_events": MNVoteScraper,
         # "events": MNEventScraper,
@@ -116,6 +116,14 @@ class Minnesota(Jurisdiction):
             'name': '2017-2018 Regular Session',
             'start_date': '2017-01-03',
             'end_date': '2018-05-21'
+        },
+        {
+            '_scraped_name': '91st Legislature, 2019-2020',
+            'classification': 'primary',
+            'identifier': '2019-2020',
+            'name': '2019-2020 Regular Session',
+            'start_date': '2019-01-03',
+            'end_date': '2019-05-21'
         },
     ]
     ignored_scraped_sessions = [

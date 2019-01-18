@@ -9,31 +9,31 @@ from pprint import pprint as ppr
 from selenium import webdriver as wd
 from selenium.common.exceptions import TimeoutException
 
-from xvfbwrapper import Xvfb
-
 import requests
 from lxml import html
 from lxml.etree import tostring
 
 import pytz
 
+from xvfbwrapper import Xvfb
+
 tz = pytz.timezone("US/Central")
 
-#from html2text import html2text
-
-start_cmd = "Xvfb :91 && export DISPLAY=:91 &"
+start_cmd = "Xvfb :93 && export DISPLAY=:93 &"
 xvfb = Xvfb()
 
 os.system(start_cmd)
 xvfb.start()
+
 br = wd.Chrome()
 br.get('https://www.leg.state.mn.us/cal?type=all')
-sleep(30)
+sleep(3)
 base = html.fromstring(br.page_source)
 xvfb.stop()
-#os.system("pkill Xvfb")
 
-house_base = base.xpath('.//div[@class="cal_item house_item"]')
+os.system("pkill Xvfb")
+
+house_base = base.xpath('.//div[@class="card border-dark house_item cal_item ml-lg-3"]')
 
 format1 = "%A, %B %d, %Y %I:%M %p"
 format2 = "%A %B %d, %Y - "
@@ -57,70 +57,68 @@ class MNHouseScraper(Scraper):
     def scrape(self):
         for c in house_base:
             m = {}
-            m['notice'] = c.xpath('.//p/span[@class="cal_special"]/text()')
-            links = c.xpath('.//h3/a/@href')            
+            header = c.xpath('.//div[@class="card-header bg-house text-white"]')[0]
+            header = c.xpath('.//div[@class="card-header bg-house text-white"]')[0] 
+            m['notice'] = header.xpath('.//span/span[@class="cal_special"]/text()')
+            links = header.xpath('.//h3/a/@href')            
             if len(links) > 0:
-                m['cmt'] = c.xpath('.//h3/a/text()')[0]
-                m['link'] = c.xpath('.//h3/a/@href')[0]
-                title = c.xpath('.//h3/text()')[0]
-                if title == 'Agenda:':
-                    m['title'] = c.xpath('.//h3/a/text()')[0]
-                else:
-                    m['title'] = c.xpath('.//h3/text()')[0]
-                
+                m['cmt'] = header.xpath('.//h3/a/text()')[0]
+                m['link'] = header.xpath('.//h3/a/@href')[0]
+                m['title'] = header.xpath('.//h3/text()')[0]     
             else:
-                m['title'] = c.xpath('.//h3/text()')[0]
+                m['title'] = header.xpath('.//h3/text()')[0]
                 m['link'] = None
-            info_div = c.xpath('.//*[@class="calendar_p_indent"]')
+            info_div = c.xpath('.//div[@class="card-body"]')[0]
             if len(info_div) == 0:
                 pass
-            else:
-                info_div = info_div[0]
-            print('Info Div: ', info_div)
+            # else:
+            #     info_div = info_div[0]
             if len(info_div) > 0:
-                info_list = info_div.xpath('.//text()')
-                info_links = info_div.xpath('.//*/@href')
+                info_text = info_div.xpath('.//div/text()')
+                info_links = info_div.xpath('.//div/*/@href')
                 print("info links: ", info_links)
-                info_list = [x.replace('\n', '').strip() for x in info_list]
-                info_list = [x for x in info_list if len(x) > 0]
-                print('Info list: ', info_list)
-                if info_list[0].startswith('Room:'):
-                    m['room'] = info_list[1]
-                else:
-                    m['room'] = 'n/a'
-                if len(info_list) > 2:
-                    if info_list[2].startswith('Chair:'):
-                        chair = info_list[3]
-                        if ',' in chair:
-                            chairs = chair.replace('\xa0', '').split(',')
-                            nchairs = []
-                            for chair in chairs:
-                                if chair.startswith('Rep.') or chair.startswith('Sen.'):
-                                    cname = pull_middle_name(chair[4:])
-                                    nchairs.append(cname.strip())
-                            m['chair'] = nchairs
-                        elif chair.startswith('Rep.') or chair.startswith('Sen.'):
-                            cname = pull_middle_name(chair[4:].strip())
-                            m['chair'] = [cname.strip()]
-                else:
-                    m['chair'] = None
-            
-            bill_rows = c.xpath(('.//*/table[@class="cal_bills"]/tbody/tr'))
-            print('Bills: ', bill_rows)
-            bills = []
-            for brs in bill_rows:
-                cells = brs.xpath('.//td')
-                if len(cells) == 3:
-                    b = {}
-                    b['bill'] = cells[0].xpath('.//text()')[0]
-                    b['author'] = cells[1].xpath('./text()')[0]
-                    b['summary'] = cells[2].xpath('./text()')[0]
-                    bills.append(b)
+                print("info text: ", info_text)
+                # info_list = [x.replace('\n', '').strip() for x in info_list]
+                # info_list = [x for x in info_list if len(x) > 0]
+                # print('Info list: ', info_list)
+                # if info_list[0].startswith('Room:'):
+                #     m['room'] = info_list[1]
+                # else:
+                #     m['room'] = 'n/a'
+                # if len(info_list) > 2:
+                #     if info_list[2].startswith('Chair:'):
+                #         chair = info_list[3]
+                #         if ',' in chair:
+                #             chairs = chair.replace('\xa0', '').split(',')
+                #             nchairs = []
+                #             for chair in chairs:
+                #                 if chair.startswith('Rep.') or chair.startswith('Sen.'):
+                #                     cname = pull_middle_name(chair[4:])
+                #                     nchairs.append(cname.strip())
+                #             m['chair'] = nchairs
+                #         elif chair.startswith('Rep.') or chair.startswith('Sen.'):
+                #             cname = pull_middle_name(chair[4:].strip())
+                #             m['chair'] = [cname.strip()]
+                # else:
+                #     m['chair'] = None
+  
+
+            # bill_rows = c.xpath(('.//*/table[@class="cal_bills"]/tbody/tr'))
+            # print('Bills: ', bill_rows)
+            # bills = []
+            # for brs in bill_rows:
+            #     cells = brs.xpath('.//td')
+            #     if len(cells) == 3:
+            #         b = {}
+            #         b['bill'] = cells[0].xpath('.//text()')[0]
+            #         b['author'] = cells[1].xpath('./text()')[0]
+            #         b['summary'] = cells[2].xpath('./text()')[0]
+            #         bills.append(b)
             if len(m['notice']) > 0:
                 m['notice'] = m['notice'][0]
             else:
                 m['notice'] = 'N/A'
-            date = c.xpath('.//p/b/text()')
+            date = header.xpath('.//b/text()')
             if len(date) < 1:
                 print('\n\n\n\n NO DATE')
                 continue
@@ -128,7 +126,7 @@ class MNHouseScraper(Scraper):
 
             if 'House Meets in Session' in m['title']:
                 m['room'] = 'State leg'
-                m['cmt'] = 'Minnesota House of Representatives'
+                m['cmt'] = 'Minnesota House of Representatives in Session'
                 m['chair'] = None
                 m['link'] = 'https://www.leg.state.mn.us/cal?type=all'
             event = Event(name=m['title'],
@@ -136,10 +134,10 @@ class MNHouseScraper(Scraper):
                           location_name=m['room'],
                           classification='govt' 
             )
-            if len(bills) > 0:
-                for bill in bills:
-                    nbill = event.add_agenda_item(description=bill['summary'])
-                    nbill.add_bill(bill['bill'].replace('HF', 'HF '))
+            # if len(bills) > 0:
+            #     for bill in bills:
+            #         nbill = event.add_agenda_item(description=bill['summary'])
+            #         nbill.add_bill(bill['bill'].replace('HF', 'HF '))
             if len(m['notice']) > 0:
                 pass
             event.add_committee(m['cmt'])

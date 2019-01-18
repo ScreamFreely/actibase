@@ -11,6 +11,7 @@ from .models import User, UserJurisdictions, Organizer, ActivistOrgs
 class UserSerializer(serializers.ModelSerializer):
 	password = serializers.CharField(write_only=True)
 
+
 	class Meta:
 		model = User
 		fields = ('id', 'username', 'user_type', 'password')
@@ -84,34 +85,7 @@ class OrgFollowersSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = ActivistOrgs
-		fields = ('id', 'activist', 'organization', 'newsfeed', 'phone', 'email')
-
-	def create(self, validated_data):
-		print('vdt', validated_data)
-		userj = super(OrgFollowersSerializer, self).create(validated_data)
-		userj.save()
-		return userj
-
-
-class OrgTMActivistSerializer(serializers.ModelSerializer):
-
-	class Meta:
-		model = User
-		fields = ('id', 'phone_number')
-
-	def create(self, validated_data):
-		print('vdt', validated_data)
-		userj = super(OrgFollowersSerializer, self).create(validated_data)
-		userj.save()
-		return userj
-
-
-class OrgTextMessageSerializer(serializers.ModelSerializer):
-	activist = OrgTMActivistSerializer()
-
-	class Meta:
-		model = ActivistOrgs
-		fields = ('id', 'activist', 'organization', 'phone',)
+		fields = ('id', 'activist', 'organization', 'phone', 'email')
 
 	def create(self, validated_data):
 		print('vdt', validated_data)

@@ -124,7 +124,6 @@ class Organizer(models.Model):
 class ActivistOrgs(models.Model):
 	activist = models.ForeignKey(User, on_delete=models.PROTECT)
 	organization = models.ForeignKey(Organization, on_delete=models.PROTECT)
-	newsfeed = models.BooleanField(default=True)
 	email = models.BooleanField(default=False)
 	phone = models.BooleanField(default=False)
 

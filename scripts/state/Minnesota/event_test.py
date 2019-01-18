@@ -25,9 +25,9 @@ print("\n\n\nBase obtained\n\n\n")
 xvfb.stop()
 os.system("pkill Xvfb")
 
-house_base = base.xpath('.//div[@class="cal_item house_item"]')
-senate_base = base.xpath('.//div[@class="cal_item senate_item"]')
-comm_base = base.xpath('.//div[@class="cal_item comm_item"]')
+# house_base = base.xpath('.//div[@class="cal_item house_item"]')
+senate_base = base.xpath('.//div[@class="card border-dark senate_item cal_item ml-lg-3]')
+# comm_base = base.xpath('.//div[@class="cal_item comm_item"]')
 
 format1 = "%A, %B %d, %Y %I:%M %p"
 format2 = "%A %B %d, %Y - "

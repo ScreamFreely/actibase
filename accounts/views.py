@@ -32,8 +32,6 @@ from rest_framework.response import Response
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-
-
 tz_format = '%Y-%m-%dT$H:%M:%S+%H:%M'
 td = timedelta(hours=18)
 odt = datetime.now() - td
@@ -185,24 +183,3 @@ def add_orgs(request):
 	else:
 		return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-@api_view(['POST'])
-@permission_classes([])
-@authentication_classes([])
-def send_text(request):
-    data = request.data
-    message = data.message
-    activists = ActivistOrgs.objects.filter(organization=data.org_id, phone=True)
-    for activist in activists:
-        phone_number = activist.activist__phone_number
-        client = plivo.RestClient()
-        message_created = client.messages.create(
-            src='the_source_number',
-            dst=phone_number,
-            text=message)
-    if serialized.is_valid():
-        serialized.save()
-        return Response(serialized.data, status=status.HTTP_201_CREATED)
-    else:
-        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)

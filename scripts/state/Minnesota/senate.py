@@ -21,7 +21,7 @@ tz = pytz.timezone("US/Central")
 
 #from html2text import html2text
 
-start_cmd = "Xvfb :91 && export DISPLAY=:91 &"
+start_cmd = "Xvfb :93 && export DISPLAY=:93 &"
 xvfb = Xvfb()
 
 os.system(start_cmd)
@@ -29,14 +29,12 @@ xvfb.start()
 
 br = wd.Chrome()
 br.get('https://www.leg.state.mn.us/cal?type=all')
-sleep(30)
+sleep(3)
 base = html.fromstring(br.page_source)
 xvfb.stop()
-#os.system("pkill Xvfb")
+os.system("pkill Xvfb")
 
-house_base = base.xpath('.//div[@class="cal_item house_item"]')
-senate_base = base.xpath('.//div[@class="cal_item senate_item"]')
-comm_base = base.xpath('.//div[@class="cal_item comm_item"]')
+senate_base = base.xpath('.//div[@class="card border-dark senate_item cal_item ml-lg-3"]')
 
 format1 = "%A, %B %d, %Y %I:%M %p"
 format2 = "%A %B %d, %Y - "
@@ -60,42 +58,49 @@ class MNSenateScraper(Scraper):
     def scrape(self):
         for c in senate_base:
             m = {}
-            m['notice'] = c.xpath('.//p/span[@class="cal_special"]/text()')
-            link = c.xpath('.//h3/a/@href')
-            print('top link: ', c.xpath('.//h3/*'))
-            if len(link) > 0:
-                m['link'] = c.xpath('.//h3/a/@href')[0]
-                m['title'] = c.xpath('.//h3/a/text()')[0]                
+            header = c.xpath('.//div[@class="card-header bg-senate text-white"]')[0]
+            print("header", header)
+            info_div = c.xpath('.//div[@class="card-body"]/table/tbody/tr')
+            print("info_div", info_div)
+            m['notice'] = header.xpath('.//span/span[@class="cal_special"]/text()')
+            links = header.xpath('.//h3/a/@href')  
+            print("links", links)          
+            if len(links) > 0:
+                m['cmt'] = header.xpath('.//h3/a/text()')[0]
+                m['link'] = header.xpath('.//h3/a/@href')[0]  
+                m['title'] = header.xpath('.//h3/a/text()')[0]   
             else:
+                m['title'] = header.xpath('.//h3/text()')
                 m['link'] = 'https://www.leg.state.mn.us/cal?type=all'
-                m['title'] = c.xpath('.//h3/text()')[0]
-            print('top link 2: ', c.xpath('.//h3/text()'))
-            info_div = c.xpath('.//div[@class="calendar_p_indent"]')
+                m['title'] = header.xpath('.//h3/text()')[0]
+                m['link'] = 'https://www.leg.state.mn.us/cal?type=all' 
+            # date = header.xpath('.//b/text()')
+            # if len(date) < 1:
+            #     print('\n\n\n\n NO DATE')
+            #     continue
+            # m['date'] = datetime.datetime.strptime(date[0], format1)
+
+
             if len(info_div) > 0:
-                info_div = info_div[0]
-                info_list = info_div.xpath('.//text()')
-                nchairs = []
-                agenda = False
-                for il in info_list:
-                    il = il.replace('\xa0', '')
-                    if il.startswith(' and '):
-                        il = il.replace(' and ', '')
-                    if il.startswith('Room'):
-                        m['room'] = il
-                    if il.startswith('Rep.') or il.startswith('Sen.'):
-                        cname = pull_middle_name(il[4:])
-                        nchairs.append(cname.strip())
-                    if agenda == True:
-                        m['agenda'] = il
-                    if il == 'Agenda: ':
-                        agenda = True
-                m['chair'] = nchairs
+                info_div_1 = info_div[0]
+                info_div_2 = info_div[1]
+                try:
+                    m['chair'] = info_div_1.xpath('.//i/a/text()')[0]
+                except:
+                    pass
+                try:
+                    header_text = info_div_1.xpath('.//text()')
+                    for ht in header_text:
+                        if ht.startswith("Room"):
+                            m['room'] = ht
+                except:
+                    pass
             if len(m['notice']) > 0:
                 m['notice'] = m['notice'][0]
+                m['title']  = m['notice'] + ' ' + m['title']
             else:
                 m['notice'] = 'N/A'
-            ppr(m)
-            date = c.xpath('.//p/span/text()')
+            date = header.xpath('.//span[@class="cal_revision"]/text()')
             if len(date) < 1:
                 print('\n\n\n\n NO DATE')
                 ppr(m)
@@ -103,21 +108,21 @@ class MNSenateScraper(Scraper):
             if 'or' in date[0]:
                 date[0] = date[0].split('or')[0]
             m['date'] = datetime.datetime.strptime(date[0].replace('\xa0', ''), format1)
-            ppr(m)
             if not 'room' in m.keys():
-                print('oops')
+                print('no room number')
                 m['room'] = 'Senate in session'
+
+            ppr(m)
+            print("\n\n\n+++++++\n\n\n")
+
             event = Event(name=m['title'],
                           start_date=tz.localize(m['date']),
                           location_name=m['room'],
                           classification='govt' 
             )
-
-            if len(m['notice']) > 0:
-                pass
             event.add_committee(m['title'])
             event.add_source(m['link'])
-            for chair in m['chair']:
-                event.add_person(name=chair, note="Chair")
+#            for chair in m['chair']:
+#                event.add_person(name=chair, note="Chair")
             yield event
         

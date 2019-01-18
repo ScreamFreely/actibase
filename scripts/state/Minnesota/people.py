@@ -36,7 +36,7 @@ class MinnesotaPersonScraper(Scraper):
         url = 'http://alpha.openstates.org/graphql'
         scrapers = [
             { 'query': '{ people(memberOf:"ocd-organization/e91db6f8-2232-49cd-91af-fdb5adb4ac3b", first: 100) { edges { node { name party: currentMemberships(classification:"party") { organization { name }} links { url } sources { url } chamber: currentMemberships(classification:["upper", "lower"]) { post { label } organization { name classification parent { name }}}}}}}'},
-#            { 'query': '{ people(memberOf:"ocd-organization/e91db6f8-2232-49cd-91af-fdb5adb4ac3b", last: 100) { edges { node { name party: currentMemberships(classification:"party") { organization { name }} links { url } sources { url } chamber: currentMemberships(classification:["upper", "lower"]) { post { label } organization { name classification parent { name }}}}}}}'},
+           { 'query': '{ people(memberOf:"ocd-organization/e91db6f8-2232-49cd-91af-fdb5adb4ac3b", last: 100) { edges { node { name party: currentMemberships(classification:"party") { organization { name }} links { url } sources { url } chamber: currentMemberships(classification:["upper", "lower"]) { post { label } organization { name classification parent { name }}}}}}}'},
             { 'query': '{ people(memberOf:"ocd-organization/6a026144-758d-4d57-b856-9c60dce3c4b5", first: 100) { edges { node { name party: currentMemberships(classification:"party") { organization { name }} links { url } sources { url } chamber: currentMemberships(classification:["upper", "lower"]) { post { label } organization { name classification parent { name }}}}}}}'},            
             ]
 

@@ -115,7 +115,7 @@ class OrganizationsSerializer(serializers.ModelSerializer):
 #    posts = PostSerializer(many=True)    
     class Meta:
         model = Organization
-        fields = ('id', 'name', 'image', 'classification', 'jurisdiction', 'memberships', 'parent')
+        fields = ('id', 'name', 'image', 'classification', 'jurisdiction', 'memberships', 'parent', 'extras')
         
 
 class OrgSerializer(serializers.ModelSerializer):
