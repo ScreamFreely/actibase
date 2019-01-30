@@ -63,8 +63,8 @@ class MNSenateScraper(Scraper):
                 print("header", header)
             except:
                 print('\n\n ++++ \n\n')
-                print(type(c.xpath('.//*'))
-                continue 
+                print(type(c.xpath('.//*')))
+                continue
             info_div = c.xpath('.//div[@class="card-body"]/table/tbody/tr')
             print("info_div", info_div)
             m['notice'] = header.xpath('.//span/span[@class="cal_special"]/text()')
