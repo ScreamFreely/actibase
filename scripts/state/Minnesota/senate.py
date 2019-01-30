@@ -58,8 +58,13 @@ class MNSenateScraper(Scraper):
     def scrape(self):
         for c in senate_base:
             m = {}
-            header = c.xpath('.//div[@class="card-header bg-senate text-white"]')[0]
-            print("header", header)
+            try:
+                header = c.xpath('.//div[@class="card-header bg-senate text-white"]')[0]
+                print("header", header)
+            except:
+                print('\n\n ++++ \n\n')
+                print(type(c.xpath('.//*'))
+                continue 
             info_div = c.xpath('.//div[@class="card-body"]/table/tbody/tr')
             print("info_div", info_div)
             m['notice'] = header.xpath('.//span/span[@class="cal_special"]/text()')
