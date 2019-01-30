@@ -57,7 +57,12 @@ class MNHouseScraper(Scraper):
     def scrape(self):
         for c in house_base:
             m = {}
-            header = c.xpath('.//div[@class="card-header bg-house text-white"]')[0]
+            try:
+                header = c.xpath('.//div[@class="card-header bg-house text-white"]')[0]
+            except:
+                print('\n\n ++++ \n\n')
+                print(type(c))
+                continue 
             print("header", header)
             info_div = c.xpath('.//div[@class="card-body"]/table/tbody/tr')
             print("info_div", info_div)
@@ -141,6 +146,7 @@ class MNHouseScraper(Scraper):
                 m['cmt'] = 'Minnesota House of Representatives in Session'
                 m['chair'] = None
                 m['link'] = 'https://www.leg.state.mn.us/cal?type=all'
+            m['room'] = m['room'] + ' House, State Legislature'
             event = Event(name=m['title'],
                           start_date=tz.localize(m['date']),
                           location_name=m['room'],
