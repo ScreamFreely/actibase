@@ -72,8 +72,6 @@ class MNSenateScraper(Scraper):
             else:
                 m['title'] = header.xpath('.//h3/text()')
                 m['link'] = 'https://www.leg.state.mn.us/cal?type=all'
-                m['title'] = header.xpath('.//h3/text()')[0]
-                m['link'] = 'https://www.leg.state.mn.us/cal?type=all' 
             # date = header.xpath('.//b/text()')
             # if len(date) < 1:
             #     print('\n\n\n\n NO DATE')
@@ -92,7 +90,7 @@ class MNSenateScraper(Scraper):
                     header_text = info_div_1.xpath('.//text()')
                     for ht in header_text:
                         if ht.startswith("Room"):
-                            m['room'] = ht
+                            m['room'] = ht.replace('Room ', '')
                 except:
                     pass
             if len(m['notice']) > 0:
