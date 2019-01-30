@@ -64,7 +64,11 @@ class MNHouseScraper(Scraper):
             if len(links) > 0:
                 m['cmt'] = header.xpath('.//h3/a/text()')[0]
                 m['link'] = header.xpath('.//h3/a/@href')[0]
-                m['title'] = header.xpath('.//h3/text()')[0]     
+                if len(header.xpath('.//h3/text()')) > 0:
+                    m['title'] = header.xpath('.//h3/text()')[0]  
+                else:
+                    m['title'] = header.xpath('.//h3/a/text()')[0]
+
             else:
                 m['title'] = header.xpath('.//h3/text()')[0]
                 m['link'] = None
