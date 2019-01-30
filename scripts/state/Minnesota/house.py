@@ -81,12 +81,13 @@ class MNHouseScraper(Scraper):
             # else:
             #     info_div = info_div[0]
             if len(info_div) > 0:
+                info_list = info_div.xpath('.//div/b/text()')
                 info_text = info_div.xpath('.//div/text()')
                 info_links = info_div.xpath('.//div/*/@href')
                 print("info links: ", info_links)
                 print("info text: ", info_text)
                 if info_list[0].startswith('Room:'):
-                    m['room'] = info_list[1]
+                    m['room'] = info_text[0]
                 else:
                     m['room'] = 'n/a'
                 # info_list = [x.replace('\n', '').strip() for x in info_list]
