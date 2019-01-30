@@ -85,6 +85,10 @@ class MNHouseScraper(Scraper):
                 info_links = info_div.xpath('.//div/*/@href')
                 print("info links: ", info_links)
                 print("info text: ", info_text)
+                if info_list[0].startswith('Room:'):
+                    m['room'] = info_list[1]
+                else:
+                    m['room'] = 'n/a'
                 # info_list = [x.replace('\n', '').strip() for x in info_list]
                 # info_list = [x for x in info_list if len(x) > 0]
                 # print('Info list: ', info_list)
