@@ -57,10 +57,13 @@ class MNHouseScraper(Scraper):
     def scrape(self):
         for c in house_base:
             m = {}
-            header = c.xpath('.//div[@class="card-header bg-house text-white"]')[0]
-            header = c.xpath('.//div[@class="card-header bg-house text-white"]')[0] 
+            header = c.xpath('.//div[@class="card-header bg-senate text-white"]')[0]
+            print("header", header)
+            info_div = c.xpath('.//div[@class="card-body"]/table/tbody/tr')
+            print("info_div", info_div)
             m['notice'] = header.xpath('.//span/span[@class="cal_special"]/text()')
-            links = header.xpath('.//h3/a/@href')            
+            links = header.xpath('.//h3/a/@href')  
+            print("links", links)           
             if len(links) > 0:
                 m['cmt'] = header.xpath('.//h3/a/text()')[0]
                 m['link'] = header.xpath('.//h3/a/@href')[0]
