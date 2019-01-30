@@ -155,7 +155,7 @@ class MNHouseScraper(Scraper):
             event.add_committee(m['cmt'])
             if m['link'] is not None:
                 event.add_source(m['link'])
-            if m['chair'] is not None:
+            if 'chair' in m:
                 for chair in m['chair']:
                    event.add_person(name=chair, note="Chair")
             yield event
