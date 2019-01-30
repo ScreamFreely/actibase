@@ -114,6 +114,8 @@ class MNSenateScraper(Scraper):
             if not 'room' in m.keys():
                 print('no room number')
                 m['room'] = 'Senate in session'
+            else:
+                m['room'] = m['room'] + ' Senate, State Legislature'
 
             ppr(m)
             print("\n\n\n+++++++\n\n\n")
