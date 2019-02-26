@@ -1,2 +1,5 @@
-# Actibase
-This repo is the core of the *Activist sites. Built primarily off of OpenCivicData's [pupa](https://github.com/opencivicdata/pupa) project, we are exploring interoperability with Django Cities as well.
+# Actibase - Docker Branch
+
+Here we are building the Docker containe for the entire MnActibase Application -- 
+
+We will ingest the client side as well, and use Docker Compose to deploy the application into the cloud.
