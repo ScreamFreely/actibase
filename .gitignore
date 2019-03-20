@@ -1,5 +1,5 @@
 *.pyc
 *.log
 *.json
-Actibase/settings.py
+#Actibase/settings.py
 scripts/state/_cache
