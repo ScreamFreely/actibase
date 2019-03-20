@@ -26,9 +26,9 @@ BASE_DIR = os.path.abspath(os.path.join(SITE_ROOT, ".."))
 SECRET_KEY = KF.secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
-# TEMPLATE_DEBUG = False
-DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
+#DEBUG = True
 
 USE_X_FORWARDED_HOST = True
 ALLOWED_HOSTS = KF.allowed_hosts
