@@ -1,4 +1,5 @@
 *.pyc
 *.log
 *.json
-MnActivist/settings.py
+#Actibase/settings.py
+scripts/state/_cache
