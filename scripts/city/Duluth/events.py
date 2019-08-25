@@ -1,5 +1,5 @@
 import re, os
-import datetime
+from datetime import datetime
 
 from pprint import pprint as ppr
 
@@ -18,7 +18,7 @@ city_url = 'http://www.duluthmn.gov'
 council_url = 'http://www.duluthmn.gov/city-council/city-councilors'
 calendar_url = 'https://duluthmn.gov/event-calendar/'
 
-DATE_FORMAT = '%B %d, %Y %I:%M %p'
+DATE_FORMAT = '%b %d, %Y %I:%M%p'
 
 # Setting up routine processes
 def get_base(site):
@@ -87,7 +87,9 @@ def getInfo(rows, numOfRows, br):
         dateInfo = br.find_elements_by_xpath('.//*/div[@id="ContentPlaceHolder1_ctl03_WebCalendar_4_upPopUp"]/table/tbody/tr/td')[0].text
         dateInfo = dateInfo.split("\n")
         dateTime = dateInfo[1] + ' '+ dateInfo[2]
-        nR['dateTime'] = datetime.strptime(dateTime.split('-')[0], DATE_FORMAT)
+        dateTime = dateTime.split('-')[0].strip()
+        print(dateTime)
+        nR['dateTime'] = datetime.strptime(dateTime, DATE_FORMAT)
         print(nR)
         moreInfo = dateInfo[3:-7]
         n = 0
