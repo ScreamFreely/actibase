@@ -104,6 +104,7 @@ def getInfo(rows, numOfRows, br):
         nR['moreInfo'] = []
         nR['location'] = []
         for mi in moreInfo:
+            mi = mi.strip()
             if site == True:
                 nR['website'] = mi
                 continue
@@ -124,6 +125,8 @@ def getInfo(rows, numOfRows, br):
                 print('oops')
         nR['location'] = (' ').join(nR['location'])
         nR['moreInfo'] = ('\n').join(nR['moreInfo'])
+        if len(nR['location']) < 1:
+            nR['location'] = 'n/a'
         # for di in dateInfo:
         #   print(di)
         #   print()
