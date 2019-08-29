@@ -99,11 +99,11 @@ def getInfo(rows, numOfRows, br):
             if site == True:
                 nR['website'] = mi
                 continue
-            elif loc == False and not mi == 'Location:':
-                nR['moreInfo'].append(mi)
-                continue
             elif mi == 'Location:':
                 loc = True
+                continue
+            elif loc == False and not mi == 'Location:':
+                nR['moreInfo'].append(mi)
                 continue
             elif mi == 'Website:':
                 loc = False
