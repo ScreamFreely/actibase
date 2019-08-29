@@ -1,5 +1,5 @@
 import re, os
-import datetime
+from datetime import datetime
 
 from pprint import pprint as ppr
 
@@ -13,12 +13,20 @@ from xvfbwrapper import Xvfb
 import requests
 from lxml import html
 
+from pupa.scrape import Scraper
+from pupa.scrape import Event
+
+import pytz
+
+
+tz = pytz.timezone("US/Central")
+
 # Set initial variables for City, etc
 city_url = 'http://www.duluthmn.gov'
 council_url = 'http://www.duluthmn.gov/city-council/city-councilors'
 calendar_url = 'https://duluthmn.gov/event-calendar/'
 
-DATE_FORMAT = '%B %d, %Y %I:%M %p'
+DATE_FORMAT = '%b %d, %Y %I:%M%p'
 
 # Setting up routine processes
 def get_base(site):
@@ -87,8 +95,8 @@ def getInfo(rows, numOfRows, br):
         dateInfo = br.find_elements_by_xpath('.//*/div[@id="ContentPlaceHolder1_ctl03_WebCalendar_4_upPopUp"]/table/tbody/tr/td')[0].text
         dateInfo = dateInfo.split("\n")
         dateTime = dateInfo[1] + ' '+ dateInfo[2]
-        nR['dateTime'] = datetime.strptime(dateTime.split('-')[0], DATE_FORMAT)
-        print(nR)
+        dateTime = dateTime.split('-')[0].strip()
+        nR['dateTime'] = datetime.strptime(dateTime, DATE_FORMAT)
         moreInfo = dateInfo[3:-7]
         n = 0
         loc = False
@@ -145,6 +153,7 @@ class DuluthEventScraper(Scraper):
 
     def scrape(self):
         for c in collectedRows:
+            print(c)
             dt = tz.localize(c['dateTime'])
             e = Event(name=c['title'],
                       start_date=dt,
@@ -159,7 +168,7 @@ class DuluthEventScraper(Scraper):
             else:
                 e.add_source(calendar_url)
                 e.add_media_link(note="Calendar link",
-                             url=c['website'],
+                             url=calendar_url,
                              media_type="link")
             
             # if c['MarkedAgendaPublished'] == True:
