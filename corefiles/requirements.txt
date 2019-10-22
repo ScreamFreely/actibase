@@ -26,7 +26,7 @@ oauthlib==2.0.6
 olefile==0.45
 opencivicdata==2.1.1
 phonenumbers==8.9.12
-Pillow==4.3.0
+Pillow==6.2.0
 psycopg2==2.7.3.2
 -e git://github.com/opencivicdata/pupa.git@538f6ccb683f64e68071d07141705da10091f655#egg=pupa
 pycodestyle==2.4.0
