@@ -27,7 +27,9 @@ xvfb = Xvfb()
 os.system(start_cmd)
 xvfb.start()
 
-br = wd.Chrome()
+# br = wd.Chrome()
+br = wd.Firefox()
+
 br.get('https://www.leg.state.mn.us/cal?type=all')
 sleep(3)
 base = html.fromstring(br.page_source)
