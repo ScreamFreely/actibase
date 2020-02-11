@@ -37,7 +37,7 @@ class Minnesota(Jurisdiction):
         "people": MNPersonScraper,
         "house": MNHouseScraper,
         "senate": MNSenateScraper,
-      #  "comms": MNCommsScraper,                
+        "comms": MNCommsScraper,                
         
 #        "vote_events": MNVoteScraper,
         # "events": MNEventScraper,

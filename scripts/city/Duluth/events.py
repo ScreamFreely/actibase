@@ -27,6 +27,7 @@ council_url = 'http://www.duluthmn.gov/city-council/city-councilors'
 calendar_url = 'https://duluthmn.gov/event-calendar/'
 
 DATE_FORMAT = '%b %d, %Y %I:%M%p'
+ALT_DATE_FORMAT = '%b %d, %Y'
 
 # Setting up routine processes
 def get_base(site):
@@ -96,7 +97,10 @@ def getInfo(rows, numOfRows, br):
         dateInfo = dateInfo.split("\n")
         dateTime = dateInfo[1] + ' '+ dateInfo[2]
         dateTime = dateTime.split('-')[0].strip()
-        nR['dateTime'] = datetime.strptime(dateTime, DATE_FORMAT)
+        try:
+            nR['dateTime'] = datetime.strptime(dateTime, DATE_FORMAT)
+        except:
+            nR['dateTime'] = datetime.strptime(dateTime, ALT_DATE_FORMAT)
         moreInfo = dateInfo[3:-7]
         n = 0
         loc = False
