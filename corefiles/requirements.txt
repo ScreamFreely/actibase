@@ -6,7 +6,7 @@ cffi==1.12.2
 chardet==3.0.4
 cryptography==2.6.1
 dj-database-url==0.3.0
-Django==2.1.7
+Django==2.2.10
 -e git://github.com/coderholic/django-cities.git@be274599e217e34ead94bb772ec3b758c5f15953#egg=django_cities
 django-cors-headers==2.1.0
 django-model-utils==3.1.1
