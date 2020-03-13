@@ -82,18 +82,23 @@ class MinneapolisEventScraper(Scraper):
         for c in council_events:
             mtg_time = datetime.strptime(c['MeetingTime'], CAL_DATE_FORMAT)
             dt = tz.localize(mtg_time)
-            e = Event(name=c['CommitteeName'],
-                      start_date=dt,
-                      location_name=c['Location'],
-                      classification='govt')
-            e.add_committee(c['CommitteeName'])
-            e.add_source(url)
-            if c['MarkedAgendaPublished'] == True:
-                event_url = "{0}{1}/{2}".format(AGENDA_BASE_URL, c['Abbreviation'], c['AgendaId'])
-                e.add_media_link(note="Agenda",
-                                 url=event_url,
-                                 media_type="link")
-            yield e
+            try:
+                e = Event(name=c['CommitteeName'],
+                          start_date=dt,
+                          location_name=c['Location'],
+                          classification='govt')
+                e.add_committee(c['CommitteeName'])
+                e.add_source(url)
+                if c['MarkedAgendaPublished'] == True:
+                    event_url = "{0}{1}/{2}".format(AGENDA_BASE_URL, c['Abbreviation'], c['AgendaId'])
+                    e.add_media_link(note="Agenda",
+                                     url=event_url,
+                                     media_type="link")
+                yield e
+            except Exception as e:
+                print(e)
+
+
                       
 
 

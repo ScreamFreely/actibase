@@ -4,7 +4,7 @@ from .utils import url_xpath
 
 from .bills import MNBillScraper
 from .committees import MNCommitteeScraper
-from .people_new import MNPersonScraper
+from .peoplenew import MNPersonScraper
 #from .vote_events import MNVoteScraper
 from .eventsalt import MNEventScraperA
 
@@ -32,15 +32,15 @@ class Minnesota(Jurisdiction):
     name = "Minnesota"
     url = "http://state.mn.us/"
     scrapers = {
-       "bills": MNBillScraper,
-      #  "committees": MNCommitteeScraper,
+        "bills": MNBillScraper,
+        # "committees": MNCommitteeScraper,
         "people": MNPersonScraper,
-        "house": MNHouseScraper,
-        "senate": MNSenateScraper,
-        "comms": MNCommsScraper,
+        # "house": MNHouseScraper,
+        # "senate": MNSenateScraper,
+        # "comms": MNCommsScraper,
         "events": MNEventScraperA,                
         
-#        "vote_events": MNVoteScraper,
+        # "vote_events": MNVoteScraper,
         # "events": MNEventScraper,
     }
     
@@ -174,9 +174,7 @@ class Minnesota(Jurisdiction):
         state.add_post('Secretary of State', 'Secretary of State', division_id='ocd-division/country:us/state:mn')
         state.add_post('State Auditor', 'State Auditor', division_id='ocd-division/country:us/state:mn')
         state.add_post('Attorney General', 'Attorney General', division_id='ocd-division/country:us/state:mn')
-        state.add_post('Lt Governor', 'Lt Governor', division_id='ocd-division/country:us/state:mn')
-        state.add_post('Governor', 'Governor', division_id='ocd-division/country:us/state:mn')
-        state.add_post('Governor', 'Governor', division_id='ocd-division/country:us/state:mn')        
+        state.add_post('Lt Governor', 'Lt Governor', division_id='ocd-division/country:us/state:mn')       
         yield state
 
         
@@ -184,8 +182,14 @@ class Minnesota(Jurisdiction):
 
         upper = Organization('Minnesota Senate', classification='upper',
                              parent_id=legis._id)
+        for x in range(0,68):
+            upper.add_post(str(x), 'Senator', division_id='ocd-division/country:us/state:mn')
+
         lower = Organization('Minnesota House of Representatives',
                              classification='lower', parent_id=legis._id)
+        for x in range(0,68):
+            lower.add_post(str(x) + 'A', 'Representative', division_id='ocd-division/country:us/state:mn')
+            lower.add_post(str(x) + 'B', 'Representative', division_id='ocd-division/country:us/state:mn')
 
         # for n in range(1, 68):
         #     upper.add_post(label=str(n), role='Senator',
@@ -199,7 +203,7 @@ class Minnesota(Jurisdiction):
         yield upper
         yield lower
 
-    def get_session_list(self):
-        return url_xpath('https://www.revisor.mn.gov/bills/'
-                         'status_search.php?body=House',
-                         '//select[@name="session"]/option/text()', verify=False)
+    # def get_session_list(self):
+    #     return url_xpath('https://www.revisor.mn.gov/bills/'
+    #                      'status_search.php?body=House',
+    #                      '//select[@name="session"]/option/text()', verify=False)

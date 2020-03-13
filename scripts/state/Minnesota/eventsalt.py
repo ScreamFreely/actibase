@@ -1,5 +1,7 @@
 from datetime import datetime
-import re
+
+import re, os
+from time import sleep
 
 import pytz
 from pupa.scrape import Scraper
@@ -14,6 +16,8 @@ from selenium.common.exceptions import TimeoutException
 
 from xvfbwrapper import Xvfb
 
+from lxml import html
+
 
 
 def get_list(url):
@@ -25,8 +29,8 @@ def get_list(url):
 
     # br = wd.Chrome()
     br = wd.Firefox()
-    br.get('https://www.leg.state.mn.us/cal?type=all')
-    sleep(30)
+    br.get('http://www.leg.state.mn.us/calendarday.aspx?jday=all')
+    sleep(15)
     base = html.fromstring(br.page_source)
     xvfb.stop()
     os.system("pkill Xvfb")
@@ -42,13 +46,12 @@ class MNEventScraperA(Scraper, LXMLMixin):
     date_formats = ("%A, %B %d, %Y %I:%M %p", "%A, %B %d")
 
     def scrape(self):
-        page = self.lxmlize(url)
-        # page = get_list(url)
+        # page = self.lxmlize(url)
+        page = get_list(url)
         # print(page)
 
         commission_meetings = page.xpath("//div[@class='card border-dark comm_item cal_item ml-lg-3']")
-        # print(self.scrape_meetings(commission_meetings, "commission"))
-        yield from self.scrape_meetings(commission_meetings, "commission")
+        # yield from self.scrape_meetings(commission_meetings, "commission")
 
         house_meetings = page.xpath("//div[@class='card border-dark house_item cal_item ml-lg-3']")
         # print("House Meetings", len(house_meetings))
@@ -56,8 +59,7 @@ class MNEventScraperA(Scraper, LXMLMixin):
         yield from self.scrape_meetings(house_meetings, "house")
 
         senate_meetings = page.xpath("//div[@class='card border-dark senate_item cal_item ml-lg-3']")
-        # print(self.scrape_meetings(senate_meetings, "senate"))
-        yield from self.scrape_meetings(senate_meetings, "senate")
+        # yield from self.scrape_meetings(senate_meetings, "senate")
 
     def scrape_meetings(self, meetings, group):
         """
@@ -75,6 +77,8 @@ class MNEventScraperA(Scraper, LXMLMixin):
             when = self.get_date(meeting)
             description = self.get_description(meeting)
             location = self.get_location(meeting)
+
+            print(when, description, location)
 
             if when and description and location:
                 print('\n\n++\n')
@@ -102,11 +106,13 @@ class MNEventScraperA(Scraper, LXMLMixin):
         meeting -- A lxml element containing event information
 
         """
-        date_raw = meeting.xpath(".//*[@class='calendar_p_top']")
+        print("Meeting: ", meeting)
+        date_raw = meeting.xpath(".//b/text()")
+        print(date_raw)
         if len(date_raw) < 1:
             return
 
-        raw_text = date_raw[0].text_content()
+        raw_text = date_raw[0]
         if "canceled" in raw_text.lower():
             return
         date_string = raw_text.split("**")[0].strip()
