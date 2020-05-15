@@ -67,8 +67,9 @@ class InvergroveheightsEventScraper(Scraper):
                       start_date=dt,
                       location_name=c['location'],
                       classification='govt')
+            # e.add_source('http://www.ci.inver-grove-heights.mn.us/272/Meetings-Schedule')
+            yield e
             # e.add_committee(c['CommitteeName'])
-            e.add_source('http://www.ci.inver-grove-heights.mn.us/272/Meetings-Schedule')
             # e.add_media_link(note="Map link",
             #                  url=c['locationLink'],
             #                  media_type="link")
@@ -77,4 +78,4 @@ class InvergroveheightsEventScraper(Scraper):
             #     e.add_media_link(note="Agenda",
             #                      url=event_url,
             #                      media_type="link")
-            yield e
+            
