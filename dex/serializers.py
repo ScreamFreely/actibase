@@ -7,7 +7,7 @@ from dex.models.dx_cities import dx_City
 
 from opencivicdata.core.models import Jurisdiction, Person, Organization, Membership, Post
 
-from opencivicdata.legislative.models import Event, Bill, EventSource
+from opencivicdata.legislative.models import Event, Bill, EventSource, EventLocation
 
 from .models.models_base import UserAddedEvent, Comment, Apple, Quote, FBEvent
 
