@@ -62,14 +62,21 @@ class SourcesSerializer(serializers.ModelSerializer):
         fields = ('url',)
 
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventLocation
+        fields = ('name',)
+
+
 class EventSerializer(serializers.ModelSerializer):
     jurisdiction = JurisdictionSerializer()
+    location = LocationSerializer()
     sources = SourcesSerializer(many=True)
 #    city = dxCitySerializer()
 
     class Meta:
         model = Event
-        fields = ('id', 'location', 'sources', 'name', 'start_date', 'description', 'jurisdiction',)
+        fields = ('location', 'sources', 'name', 'start_date', 'description', 'jurisdiction',)
         depth = 1
 
 
