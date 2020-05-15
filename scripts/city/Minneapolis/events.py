@@ -126,9 +126,9 @@ class MinneapolisEventScraper(Scraper):
                           classification='govt')
                 e.add_committee(c['name'])
                 e.add_source(c['link'])
-                e.add_media_link(note="Calendar Invite",
-                                 url=c['cal_invite'],
-                                 media_type="link")
+                # e.add_media_link(note="Calendar Invite",
+                #                  url=c['cal_invite'],
+                #                  media_type="link")
                 yield e
             except Exception as e:
                 print(e)

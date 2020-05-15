@@ -51,9 +51,9 @@ class WayzataEventScraper(Scraper):
                       classification='govt')
             # e.add_committee(c['CommitteeName'])
             e.add_source('https://www.wayzata.org/RSSFeed.aspx?ModID=58&CID=All-calendar.xml')
-            e.add_media_link(note="Event link",
-                             url=c['link'],
-                             media_type="link")
+            # e.add_media_link(note="Event link",
+            #                  url=c['link'],
+            #                  media_type="link")
             # if c['MarkedAgendaPublished'] == True:
             #     event_url = "{0}{1}/{2}".format(AGENDA_BASE_URL, c['Abbreviation'], c['AgendaId'])
             #     e.add_media_link(note="Agenda",

@@ -169,14 +169,14 @@ class DuluthEventScraper(Scraper):
             # e.add_committee(c['CommitteeName']
             if 'website' in c:
                 e.add_source(c['website'])
-                e.add_media_link(note="Event link",
-                             url=c['website'],
-                             media_type="link")
+                # e.add_media_link(note="Event link",
+                #              url=c['website'],
+                #              media_type="link")
             else:
                 e.add_source(calendar_url)
-                e.add_media_link(note="Calendar link",
-                             url=calendar_url,
-                             media_type="link")
+                # e.add_media_link(note="Calendar link",
+                #              url=calendar_url,
+                #              media_type="link")
             
             # if c['MarkedAgendaPublished'] == True:
             #     event_url = "{0}{1}/{2}".format(AGENDA_BASE_URL, c['Abbreviation'], c['AgendaId'])
