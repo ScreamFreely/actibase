@@ -56,19 +56,22 @@ for m in months:
                     isDigit = 0
                 else:
                     isDigit = 0              
+print(FINAL_DATES)
+
 
 class InvergroveheightsEventScraper(Scraper):
 
     def scrape(self):
         for c in FINAL_DATES:
+            print(c)
             mtg_time = datetime.strptime(c['date'], DATE_FORMAT)
             dt = tz.localize(mtg_time)
             e = Event(name=c['info'],
                       start_date=dt,
                       location_name=c['location'],
                       classification='govt')
-            # e.add_source('http://www.ci.inver-grove-heights.mn.us/272/Meetings-Schedule')
             yield e
+            # e.add_source('http://www.ci.inver-grove-heights.mn.us/272/Meetings-Schedule')
             # e.add_committee(c['CommitteeName'])
             # e.add_media_link(note="Map link",
             #                  url=c['locationLink'],
