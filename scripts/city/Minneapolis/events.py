@@ -33,7 +33,7 @@ def processSpan(div):
     if len(links) == 1:
         name = div.find_elements_by_tag_name('span')[0].text
         deets['xport'] = links[0].get_attribute('href')
-        deets['href'] = None
+        deets['href'] = 'https://lims.minneapolismn.gov/Calendar/citycouncil/upcoming'
     else:
         deets['href'] = links[0].get_attribute('href')
         deets['xport'] = links[1].get_attribute('href')
