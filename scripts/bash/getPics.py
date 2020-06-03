@@ -24,6 +24,7 @@ import siteauth as KF
 LINKS = [
     'https://mnactivist.org/p/Minneapolis',
     'https://mnactivist.org/p/Saint-Paul',
+    'https://mnactivist.org/p/Duluth',
 #    'https://mnactivist.org/p/Inver-Grove-Heights',
 #    'https://mnactivist.org/p/Wayzata',
 #    'https://mnactivist.org/p/Hennepin-County',
