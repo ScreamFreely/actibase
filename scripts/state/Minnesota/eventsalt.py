@@ -21,19 +21,21 @@ from lxml import html
 
 
 def get_list(url):
+    print('getting list')
     start_cmd = "Xvfb :91 && export DISPLAY=:91 &"
     xvfb = Xvfb()
-
+    os.system("pkill Xvfb")
     os.system(start_cmd)
     xvfb.start()
 
-    # br = wd.Chrome()
-    br = wd.Firefox()
+    br = wd.Chrome()
+    # br = wd.Firefox()
     br.get('http://www.leg.state.mn.us/calendarday.aspx?jday=all')
     sleep(15)
     base = html.fromstring(br.page_source)
     xvfb.stop()
     os.system("pkill Xvfb")
+    print('Xbfb kilt')
     return base
 
 
@@ -48,10 +50,10 @@ class MNEventScraperA(Scraper, LXMLMixin):
     def scrape(self):
         # page = self.lxmlize(url)
         page = get_list(url)
-        # print(page)
+        print('Got page')
 
         commission_meetings = page.xpath("//div[@class='card border-dark comm_item cal_item ml-lg-3']")
-        # yield from self.scrape_meetings(commission_meetings, "commission")
+        yield from self.scrape_meetings(commission_meetings, "commission")
 
         house_meetings = page.xpath("//div[@class='card border-dark house_item cal_item ml-lg-3']")
         # print("House Meetings", len(house_meetings))
@@ -59,7 +61,7 @@ class MNEventScraperA(Scraper, LXMLMixin):
         yield from self.scrape_meetings(house_meetings, "house")
 
         senate_meetings = page.xpath("//div[@class='card border-dark senate_item cal_item ml-lg-3']")
-        # yield from self.scrape_meetings(senate_meetings, "senate")
+        yield from self.scrape_meetings(senate_meetings, "senate")
 
     def scrape_meetings(self, meetings, group):
         """
