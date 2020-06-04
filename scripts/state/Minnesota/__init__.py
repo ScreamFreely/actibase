@@ -8,9 +8,9 @@ from .peoplenew import MNPersonScraper
 #from .vote_events import MNVoteScraper
 from .eventsalt import MNEventScraperA
 
-from .house import MNHouseScraper
-from .senate import MNSenateScraper
-from .comms import MNCommsScraper
+# from .house import MNHouseScraper
+# from .senate import MNSenateScraper
+# from .comms import MNCommsScraper
 
 
 
