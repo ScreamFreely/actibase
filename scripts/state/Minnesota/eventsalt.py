@@ -171,16 +171,10 @@ class MNEventScraperA(Scraper, LXMLMixin):
         result = self.get_tail_of(meeting, "^Room:")
         if result is not None:
             return result
-        fallback_list = meeting.xpath(".//text()")
-        if 'Room: ' in fallback_list:
-            fallback_list = meeting.xpath(".//text()").index('Room: ')
-            fallback_texts = meeting.xpath(".//text()")[fallback_list+1]
-            print('FALL BACK', fallback_texts)
-            return fallback_texts.strip()
-        else:
-            fallback_texts = meeting.xpath(".//text()[starts-with(., 'Room')]")
-            if len(fallback_texts) >= 1:
-                return fallback_texts[0][4:].strip()
+        fallback_texts = meeting.xpath(".//text()[starts-with(., 'Room')]")
+        print('FALL BACK', fallback_texts)
+        if len(fallback_texts) >= 1:
+            return fallback_texts[0][4:].strip()
 
     def get_agenda(self, meeting):
         """
