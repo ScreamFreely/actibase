@@ -172,7 +172,6 @@ class MNEventScraperA(Scraper, LXMLMixin):
         if result is not None:
             return result
         fallback_texts = meeting.xpath(".//text()[starts-with(., 'Room')]")
-        print('FALL BACK', fallback_texts)
         if len(fallback_texts) >= 1:
             return fallback_texts[0][4:].strip()
 
