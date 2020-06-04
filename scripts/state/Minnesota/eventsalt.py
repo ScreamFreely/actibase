@@ -28,8 +28,8 @@ def get_list(url):
     os.system(start_cmd)
     xvfb.start()
 
-    # br = wd.Chrome()
-    br = wd.Firefox()
+    br = wd.Chrome()
+    # br = wd.Firefox()
     br.get('http://www.leg.state.mn.us/calendarday.aspx?jday=all')
     sleep(15)
     base = html.fromstring(br.page_source)
