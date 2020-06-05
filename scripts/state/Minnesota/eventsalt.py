@@ -91,7 +91,6 @@ class MNEventScraperA(Scraper, LXMLMixin):
                     start_date=when.replace(tzinfo=self.tz),
                     description=description,
                     location_name=location,
-                    classification='govt',
                 )
                 agenda = self.get_agenda(meeting)
                 if agenda:
