@@ -39,8 +39,8 @@ os.system(start_cmd)
 xvfb.start()
 print("Xvfb started")
 
-# br = wd.Chrome()
-br = wd.Firefox()
+br = wd.Chrome()
+# br = wd.Firefox()
 br.set_window_size(800, 1000)
 
 # graph = facebook.GraphAPI(mnact['access_token'], 2.7)
