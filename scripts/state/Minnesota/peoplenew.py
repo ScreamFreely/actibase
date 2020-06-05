@@ -11,12 +11,11 @@ PARTIES = {"DFL": "Democratic-Farmer-Labor", "R": "Republican"}
 
 
 class SenList(CSV):
-    url = "http://www.senate.mn/members/member_list_ascii.php?ls="
+    # url = "http://www.senate.mn/members/member_list_ascii.php?ls="
+    url = "http://www.senate.mn/members/index.php"
     _html_url = "http://www.senate.mn/members/index.php"
 
-
     def __init__(self, scraper, url=None, *, obj=None, **kwargs):
-        self.verify = False
         super().__init__(scraper, url=url, obj=obj, **kwargs)
         self._scrape_extra_info()
 
@@ -44,7 +43,7 @@ class SenList(CSV):
             if "mailto:" in email_link.get("href"):
                 leg["email"] = email_link.get("href").replace("mailto:", "")
 
-        logger = logging.getLogger("pupa")
+        logger = logging.getLogger("openstates")
         logger.info(
             "collected preliminary data on {} legislators".format(len(self.extra_info))
         )
@@ -152,6 +151,5 @@ class RepList(Page):
 
 class MNPersonScraper(Scraper, Spatula):
     def scrape(self):
-        self.verify = False
-        yield from self.scrape_page_items(SenList, verify=False)
-        yield from self.scrape_page_items(RepList, verify=False)
+        yield from self.scrape_page_items(SenList)
+        yield from self.scrape_page_items(RepList)
