@@ -28,7 +28,7 @@ LINKS = [
 #    'https://mnactivist.org/p/Inver-Grove-Heights',
 #    'https://mnactivist.org/p/Wayzata',
 #    'https://mnactivist.org/p/Hennepin-County',
-#   'https://mnactivist.org/p/Minnesota',
+   'https://mnactivist.org/p/Minnesota',
 ]
 
 mnact = {'access_token': KF.fb_token, 'id': KF.fb_id}

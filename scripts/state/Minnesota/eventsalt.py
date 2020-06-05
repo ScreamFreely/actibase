@@ -178,10 +178,6 @@ class MNEventScraperA(Scraper, LXMLMixin):
             fallback_texts = meeting.xpath(".//text()")[fallback_list+1]
             print('FALL BACK', fallback_texts)
             return fallback_texts.strip()
-        else:
-            fallback_texts = meeting.xpath(".//text()[starts-with(., 'Room')]")
-            if len(fallback_texts) >= 1:
-                return fallback_texts[0][4:].strip()
 
     def get_agenda(self, meeting):
         """
