@@ -24,7 +24,7 @@ idna==2.6
 importlib-metadata==1.6.0
 JSON-minify==0.3.0
 jsonschema==3.2.0
-lxml==4.5.0
+lxml==4.6.5
 oauthlib==3.1.0
 olefile==0.46
 opencivicdata==3.2.0
