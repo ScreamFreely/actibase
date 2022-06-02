@@ -45,7 +45,7 @@ parso==0.8.3
 pexpect==4.8.0
 phonenumbers==8.12.46
 pickleshare==0.7.5
-Pillow==9.1.0
+Pillow==9.1.1
 plivo==4.23.0
 prompt-toolkit==3.0.29
 psycopg2==2.9.3
