@@ -30,7 +30,7 @@ gunicorn==20.1.0
 h11==0.13.0
 idna==3.3
 importlib-metadata==4.11.3
-ipython==7.32.0
+ipython==8.10.0
 jedi==0.18.1
 JSON-minify==0.3.0
 jsonschema==4.4.0
